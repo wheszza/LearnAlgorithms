@@ -1,6 +1,9 @@
 package MySort;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @Author whe
@@ -151,7 +154,7 @@ public class MySort {
         int temp = arr[i];
         int child = 2 * i + 1;//左孩子
         while (child < len) {
-            if (arr[child] < arr[child + 1]) {
+            if (child + 1 < len && arr[child] < arr[child + 1]) {
                 child++;//找到最大的孩子
             }
             if (temp >= arr[child]) { //比最大的孩子大，必然大于两个孩子
@@ -162,6 +165,108 @@ public class MySort {
             child = 2 * i + 1;
         }
         arr[i] = temp;
+    }
+
+    int[] countSort(int[] sourceArray) {
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < arr.length; i++) {
+            if (max < arr[i]) max = arr[i];
+            if (min > arr[i]) min = arr[i];
+        }
+        int[] count = new int[max - min + 1];
+        for (int i = 0; i < arr.length; i++) {
+            count[arr[i] - min]++;
+        }
+        int j = 0;
+        for (int i = 0; i < count.length; i++) {
+            while (count[i] > 0) {
+                arr[j] = min + i;
+                count[i]--;
+                j++;
+            }
+        }
+        return arr;
+    }
+
+    int[] bucketSort(int[] sourceArray) {
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        // 计算最大值与最小值
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i < arr.length; i++){
+            max = Math.max(max, arr[i]);
+            min = Math.min(min, arr[i]);
+        }
+        // 计算桶的数量
+        int bucketNum = (max - min) / arr.length + 1;
+        ArrayList<ArrayList<Integer>> bucketArr = new ArrayList<>(bucketNum);
+        for(int i = 0; i < bucketNum; i++){
+            bucketArr.add(new ArrayList<Integer>());
+        }
+
+        // 将每个元素放入桶
+        for(int i = 0; i < arr.length; i++){
+            int num = (arr[i] - min) / (arr.length);
+            bucketArr.get(num).add(arr[i]);
+        }
+
+        // 对每个桶进行排序
+        for(int i = 0; i < bucketArr.size(); i++){
+            Collections.sort(bucketArr.get(i));
+        }
+
+        // 将桶中的元素赋值到原序列
+        int index = 0;
+        for(int i = 0; i < bucketArr.size(); i++){
+            for(int j = 0; j < bucketArr.get(i).size(); j++){
+                arr[index++] = bucketArr.get(i).get(j);
+            }
+        }
+        return arr;
+    }
+
+    int[] radixSort(int[] sourceArray) {
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        int maxValue = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            if (maxValue < arr[i]) {
+                maxValue = arr[i];
+            }
+        }
+        int length = String.valueOf(maxValue).length();
+
+        for (int digit = 0; digit < length; digit++) {
+            final int radix = 10; // 基数
+            int[] count = new int[radix];
+            int[] bucket = new int[arr.length];
+
+            // 统计将数组中的数字分配到桶中后，各个桶中的数字个数
+            for (int i = 0; i < arr.length; i++) {
+                count[getDigit(arr[i], digit)]++;
+            }
+
+            // 将各个桶中的数字个数，转化成各个桶中最后一个数字的下标索引
+            for (int i = 1; i < radix; i++) {
+                count[i] = count[i] + count[i - 1];
+            }
+
+            // 将原数组中的数字分配给辅助数组 bucket
+            for (int i = 0; i < arr.length; i++) {
+                int number = arr[i];
+                int d = getDigit(number, digit);
+                bucket[count[d] - 1] = number;
+                count[d]--;
+            }
+            arr = Arrays.copyOf(bucket, bucket.length);
+        }
+        return arr;
+    }
+
+    private int getDigit(int x, int d) {
+        int a[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+        return ((x / a[d]) % 10);
     }
 
     private void swap(int[] arr, int i, int j) {

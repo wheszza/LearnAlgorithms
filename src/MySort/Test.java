@@ -25,6 +25,10 @@ public class Test {
 
         System.out.println(Arrays.toString(test.heapSort(arr)));
 
+        System.out.println(Arrays.toString(test.countSort(arr)));
+
+        System.out.println(Arrays.toString(test.radixSort(arr)));
+
         System.out.println(Arrays.toString(arr));
     }
 }
