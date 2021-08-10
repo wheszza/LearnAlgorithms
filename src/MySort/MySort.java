@@ -11,6 +11,7 @@ import java.util.Comparator;
  */
 public class MySort {
 
+    //冒泡排序
     int[] bubbleSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         for (int i = arr.length - 1; i > 0; i--) {
@@ -23,6 +24,8 @@ public class MySort {
         return arr;
     }
 
+
+    //选择排序
     int[] selectSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         for (int i = 0; i < arr.length; i++) {
@@ -39,12 +42,14 @@ public class MySort {
         return arr;
     }
 
+
+    //插入排序
     int[] insertSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         for (int i = 1; i < arr.length; i++) {
             int temp = arr[i];
             int j = i;
-            while (j >= 1 && temp < arr[j - 1]) {
+            while (j >= 1 && temp < arr[j - 1]) { //j>=1防止越界，temp<arr[j-1]意味temp应在j的左边
                 arr[j] = arr[j - 1];
                 j--;
             }
@@ -53,6 +58,7 @@ public class MySort {
         return arr;
     }
 
+    //希尔排序
     int[] shellSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         int len = arr.length;
@@ -72,6 +78,8 @@ public class MySort {
         return arr;
     }
 
+
+    //归并排序
     int[] mergeSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         if (arr.length < 2) {
@@ -108,11 +116,13 @@ public class MySort {
         return res;
     }
 
+    //快速排序
     int[] quickSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         quickSort(arr, 0, arr.length - 1);
         return arr;
     }
+
 
     private void quickSort(int[] arr, int low, int high){
         if (low < high) {
@@ -138,6 +148,8 @@ public class MySort {
         return low;
     }
 
+
+    //堆排序
     int[] heapSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         for (int i = arr.length / 2; i >= 0; i--) {
@@ -167,6 +179,7 @@ public class MySort {
         arr[i] = temp;
     }
 
+    //计数排序
     int[] countSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         int min = Integer.MAX_VALUE;
@@ -190,6 +203,7 @@ public class MySort {
         return arr;
     }
 
+    //桶排序
     int[] bucketSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         // 计算最大值与最小值
@@ -227,6 +241,7 @@ public class MySort {
         return arr;
     }
 
+    //基数排序
     int[] radixSort(int[] sourceArray) {
         int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
         int maxValue = arr[0];
